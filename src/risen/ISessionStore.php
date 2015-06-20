@@ -1,5 +1,0 @@
-<?php #release
-namespace ISessionStore
-{
-
-}
