@@ -1,0 +1,51 @@
+#!/bin/sh
+
+DEPS=`find src -name *.php | grep -v trace | xargs`
+
+PREFIX=.
+ENABLE_TRACE=true
+
+for i in $@; do
+	if [ ${i/#--prefix=/} != $i  ]; then
+		PREFIX=${i/#--prefix=/}
+	fi  
+	if [ $i = --disable-trace  ]; then
+		ENABLE_TRACE=false
+	fi 
+done
+
+cat << Makefile > Makefile 
+DEPS = $DEPS 
+PREFIX = $PREFIX
+ENABLE_TRACE = $ENABLE_TRACE
+
+risen_php : \$(DEPS) Makefile
+	@echo compile begin ...
+	@if [ -f build/risen/trace/class_alias.php ]; then \\
+		rm -rf build/risen/trace/class_alias.php; \\
+	fi;
+	@for file in \$(DEPS); do \
+		./compiler.sh \$\$file \$(ENABLE_TRACE); \
+	done
+	cp src/risen/trace/__risen_trace.js build/risen/trace/__risen_trace.js
+	cp src/risen/trace/user_trace_func.php build/risen/trace/user_trace_func.php
+	@echo compile end ...
+	date > risen_php
+
+install: 
+	if [ -d \$(PREFIX)/risen ]; then \\
+		rm -rf \$(PREFIX)/risen; \\
+	fi
+	if [ ! -d \$(PREFIX) ]; then \\
+		mkdir -p \$(PREFIX); \\
+	fi
+	cp -rf build/risen \$(PREFIX)/risen
+
+uninstall: 
+	rm -rf \$(PREFIX)/risen
+
+clean: 
+	@if [ -d build ]; then rm -rf build ; fi
+	@rm risen_php
+	@echo clean
+Makefile
