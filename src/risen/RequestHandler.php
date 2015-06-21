@@ -29,9 +29,9 @@ class RequestHandler
         $this->templateFile = $tplFile;
     }
 
-    function ajaxProxy()
+    static function isAjax()
     {
-        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) ? $_SERVER['HTTP_X_REQUESTED_WITH']: false;
+        return isset($_SERVER['HTTP_X_REQUESTED_WITH']);
     }
 
     function redirectJs($url)
