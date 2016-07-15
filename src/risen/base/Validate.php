@@ -1,5 +1,5 @@
 <?php
-namespace risen;
+namespace risen\base;
 
 class Validate
 {

@@ -6,8 +6,10 @@
  * Time: 下午7:32
  */
 
-namespace risen;
-#namespace risen\trace;
+namespace risen\base;
+#trace
+use risen\Trace;
+#endtrace
 
 class RequestHandler
 {
@@ -93,7 +95,10 @@ html;
             if (is_string($result) || is_numeric($result)) {
                 echo $result;
             }
-            else{
+            else{ // 目前只当做json处理，xml之类的以后可以考虑
+#trace
+				Trace::setResponseType(Trace::TYPE_JSON);
+#endtrace
                 if (!headers_sent()) {
                     header("Content-Type:text/json");
                 }

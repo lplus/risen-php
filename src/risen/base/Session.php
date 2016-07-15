@@ -1,6 +1,6 @@
 <?php #release
 
-namespace risen;
+namespace risen\base;
 
 use example\dbi\quetzal\UserTable;
 class Session

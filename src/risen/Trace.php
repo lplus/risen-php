@@ -17,7 +17,15 @@ class Trace
     const SHOW_BOTH = 3;
 
     static $showMask = 1;
-
+    
+    const TYPE_WEB = 1;
+    const TYPE_JSON = 2;
+    private static $__responseType = 1;
+    
+    static function setResponseType($type) {
+    	self::$__responseType = $type;
+    }
+    
     static function enable($showMask = 1)
     {
         ob_start();
@@ -101,8 +109,8 @@ class Trace
 
         $output = ob_get_clean();
         $json = json_encode(self::$__data);
-//        var_dump($_SERVER);
-        if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+        
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) || self::$__responseType == self::TYPE_JSON) {
             header("__risen_trace_json: " . $json);
             echo $output;
         }

@@ -37,7 +37,7 @@ if [ $enable_trace = true ]; then
 	fi
 	sed 's/^namespace risen/namespace risen\\trace/;/^#/d' $file > $dir
 	class=${file:4: ${#file} - 8}
-	class=${class//\//'\'} 
+	class=${class//\//'\\'} 
 	echo "class_alias('"${class//risen/'risen\\trace'}"', '$class');" >> $class_alias_file
 fi
 

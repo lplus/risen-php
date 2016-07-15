@@ -6,7 +6,7 @@
  * Time: 下午6:44
  */
 
-namespace risen\dbi;
+namespace risen\base\dbi;
 
 class DbTable
 {

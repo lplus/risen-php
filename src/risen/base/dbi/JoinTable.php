@@ -6,10 +6,10 @@
  * Time: 下午2:49
  */
 
-namespace risen\dbi;
+namespace risen\base\dbi;
 
 #trace
-use risen\Trace;
+use risen\base\Trace;
 #endtrace
 
 class JoinTable

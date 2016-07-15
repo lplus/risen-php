@@ -6,7 +6,7 @@
  * Time: 下午7:32
  */
 
-namespace risen;
+namespace risen\base;
 
 class Request
 {

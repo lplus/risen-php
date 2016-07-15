@@ -6,7 +6,7 @@
  * Time: 下午7:31
  */
 
-namespace risen;
+namespace risen\base;
 
 #trace
 use risen\Trace;

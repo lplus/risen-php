@@ -6,10 +6,9 @@
  * Time: 下午5:03
  */
 
-namespace risen;
-#namespace risen\trace;
+namespace risen\base;
 
-use risen\Request;
+use risen\base\Request;
 
 class Form implements \ArrayAccess
 {

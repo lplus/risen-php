@@ -6,9 +6,9 @@
  * Time: 上午9:42
  */
 
-namespace risen\dbi;
+namespace risen\base\dbi;
 #trace
-use risen\Trace;
+use risen\base\Trace;
 #endtrace
 
 abstract class AdapterBase
