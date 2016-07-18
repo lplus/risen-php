@@ -7,6 +7,9 @@
  */
 
 namespace risen\base\dbi;
+#trace
+use risen\Trace;
+#endtrace
 
 class DbTable
 {
@@ -30,8 +33,25 @@ class DbTable
     static function select($fields = '*'/* $where = "", $order="", $limit = "10", $params = array() */)
     {
         $args = func_get_args();
+#trace
+        if (empty(static::$name)) {
+            Trace::appendError(array(
+                'errstr' => get_called_class() . "::\$name for table name is empty",
+                'backtrace' => debug_backtrace()
+            ));
+        }
+#endtrace
         array_unshift($args, static::$name);
         return call_user_func_array(array(static::getAdapter(), 'select'), $args);
+    }
+    
+    static function selectOne($fields = '*'/* $where = "", $order="", $limit = "10", $params = array() */)
+    {
+        $result = call_user_func_array(get_called_class() . "::select", func_get_args());
+        if (empty($result)) {
+            return null;
+        }
+        return $result[0];
     }
 
     static function selectByPk($pk)

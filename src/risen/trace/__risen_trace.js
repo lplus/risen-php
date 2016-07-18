@@ -359,7 +359,8 @@ function traceConsole()
     var data = __risen_trace_option.data;
 
     console.info("Risen PHP Framework Trace:");
-    console.log("[Page cost:" + data['statics'].time
+    console.log("[METHOD: " + data['statics'].method
+        + ", Page cost:" + data['statics'].time
         + " Sec, Requests per second: "
         + Math.round(1 / data['statics'].time)
         + ", Memory usage: " + data['statics'].mem / 1024 + "KB]");
@@ -399,7 +400,6 @@ function traceConsole()
             if (data['sql'][j].explain != null) {
                 console.log("Explain:");
                 console.table(data['sql'][j].explain);
-                console.log("xxxx");
             }
 
             console.log("Backtrace:");

@@ -13,12 +13,12 @@ use risen\Trace;
 
 class RequestHandler
 {
-    protected $autoDisplay = false;
+    protected $autoDisplay = true;
     protected $templateFile = '';
 
     function setAutoDisplay($auto = true)
     {
-        $this->autoDisplay = true;
+        $this->autoDisplay = $auto;
     }
 
     function partial($tplName)
@@ -62,31 +62,49 @@ html;
         exit(0);
     }
 
+    function handleAbort() {
+        $this->hasHandle = true;
+    }
+
+    private $hasHandle = false;
     function handle()
     {
-        static $hasHandle = false;
-        if ($hasHandle) {
+        if ($this->hasHandle) {
             return;
         }
-        $hasHandle = true;
+        $this->hasHandle = true;
         $result = null;
         if (method_exists($this, 'init')) {
             $this->init();
         }
+
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
             if (method_exists($this, 'onGet')) {
                 $result = $this->onGet();
             }
         }
-        elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
-            if (method_exists($this, 'onPost')) {
-                $result = $this->onPost();
+        else {
+            $method = 'on' . ucfirst(strtolower($_SERVER['REQUEST_METHOD']));
+
+            if (method_exists($this, $method)) {
+                $result = $this->$method();
+            }
+            else {
+                header($_SERVER["SERVER_PROTOCOL"]." 405 Method Not Allowed");
+#trace
+
+                echo "<h1>405 Not Allowed</h1>\n";
+                echo "<hr/>\n";
+                echo "method {$_SERVER['REQUEST_METHOD']} not allowed\n";
+
+                Trace::appendError(array(
+                    'errstr' => "method {$method} not exists in class " . get_class($this)
+                ));
+#endtrace
+
             }
         }
-        else {
-            $method = ucfirst(strtolower($_SERVER['REQUEST_METHOD']));
-            $result = $this->$method();
-        }
+
         if (method_exists($this, 'finish')) {
             $this->finish();
         }
@@ -106,28 +124,39 @@ html;
             }
             return;
         }
-
-        if ($this->autoDisplay) {
+		else if ($this->autoDisplay) {
             $this->display();
         }
     }
 
     function display()
     {
-        static $hasDisplay = false;
-        if ($hasDisplay) {
-            return;
-        }
+//        static $hasDisplay = false;
+//        if ($hasDisplay) {
+//            return;
+//        }
 
         $templateFile = ($this->templateFile == '') ?
             str_replace(array('handler\\', '\\'), array('template/', '/'), get_class($this)) . '.phtml':
-            Application::$applicationName . '/template' . $this->templateFile;
+            Application::$applicationName . '/template/' . $this->templateFile;
 
         if (is_file($templateFile)) {
             include $templateFile;
         }
 
         $hasDisplay = true;
+    }
+
+    function displayTemplate($template) {
+        $templateFile = Application::$applicationName . '/template/' . $template;
+        if (is_file($templateFile)) {
+            include $templateFile;
+        }
+#trace
+        else {
+            Trace::appendError(['errstr' => 'template file ' . $templateFile . ' not exists']);
+        }
+#endtrace
     }
 
     function __toString()

@@ -8,7 +8,7 @@
 
 namespace risen\base\dbi;
 #trace
-use risen\base\Trace;
+use risen\Trace;
 #endtrace
 
 abstract class AdapterBase
@@ -29,7 +29,18 @@ abstract class AdapterBase
         }
         else {
             $stmt = $this->__pdo->prepare($sql);
-            tr($params);
+
+            if ($stmt === false) {
+#trace
+                $err = $this->__pdo->errorInfo();
+                if (isset($err[2]))
+                    Trace::appendError(array(
+                        'errstr' => "{$sql_real};\n{$err[2]}",
+                        'backtrace' => debug_backtrace()
+                    ));
+#endtrace
+                return array();
+            }
             $stmt->execute($params);
         }
 #trace
@@ -193,6 +204,13 @@ abstract class AdapterBase
                     \PDO::ATTR_EMULATE_PREPARES => false,
 //                    \PDO::ATTR_PERSISTENT => true
                 ));
+#trace
+            if ($this->__pdo === null) {
+                Trace::appendError([
+                    'errstr' => 'aa'
+                ]);
+            }
+#endtrace
         }
     }
 

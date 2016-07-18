@@ -37,7 +37,7 @@ class Application
      * @param string $appName 应用名，应用程序目录的名字
      * @param callable $userMapFunction 自定义URL映射的函数，如果函数返回空则使用默认规则,
      */
-    static function run($appName, callable $userMapFunction = null)
+    static function run($appName = 'app', callable $userMapFunction = null)
     {
         self::$applicationName = $appName;
 
@@ -55,10 +55,21 @@ class Application
 
         if (class_exists($handlerClass)) {
             $handler = new $handlerClass;
+
+#trace
+            if (!($handler instanceof RequestHandler)) {
+                Trace::appendError([
+                    'errstr' => "$handlerClass must be sub class of risen\\base\\RequestHandler"
+                ]);
+            }
+#endtrace
+
+			$handler->handle();
+			/*
             if (empty(self::$layoutHandler)) {
 //                $handler->setAutoDisplay();
                 $handler->handle();
-                $handler->display();
+                //$handler->display();
             }
             else {
                 $childProperty = self::$layoutChildProperty;
@@ -67,11 +78,12 @@ class Application
                 self::$layoutHandler->handle();
                 self::$layoutHandler->display();
             }
+			 */
         }
         else {
             $handlerClass404 = "$appName\\handler\\NotfoundHandler";
             header("HTTP/1.1 404 Not Found");
-            if (class_exists($handlerClass)) {
+            if (class_exists($handlerClass404)) {
                 $handler404 = new $handlerClass404;
                 $handler404->setAutoDisplay();
                 $handler404->handle();

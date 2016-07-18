@@ -30,7 +30,7 @@ class Trace
     {
         ob_start();
         self::$showMask = $showMask;
-
+		
         self::$__beginTime = microtime(true);
         self::$__data['globals']['$_SERVER'] = $_SERVER;
         self::$__data['globals']['$_GET'] = $_GET;
@@ -86,7 +86,8 @@ class Trace
         (defined("DEBUG_OUTPUT") && !DEBUG_OUTPUT ) && die;
         self::$__data['statics'] = array(
             'time' => round(microtime(true) - self::$__beginTime, 4),
-            'mem' => memory_get_usage(true)
+            'mem' => memory_get_usage(true),
+            'method' => $_SERVER['REQUEST_METHOD']
         );
 
         if (self::$allErrorsCanHandle === false) {
