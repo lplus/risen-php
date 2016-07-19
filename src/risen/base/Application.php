@@ -112,13 +112,13 @@ class Application
         if ($_SERVER["REQUEST_URI"] == '/') {
             return '\IndexHandler';
         }
-        $pathInfo = $_SERVER["REQUEST_URI"];
 
-        if ($pos = strrpos($pathInfo, ".")) {
-            $pathInfo = substr($pathInfo, 0, $pos);
-        }
-        elseif($pos = strrpos($pathInfo, '?')) {
-            $pathInfo = substr($pathInfo, 0, $pos);
+        $urlInfo = parse_url($_SERVER['REQUEST_URI']);
+        $pathInfo = $urlInfo['path'];
+
+        $dotPos = strpos($pathInfo, '.');
+        if ($dotPos !== false) {
+            $pathInfo = substr($pathInfo, 0, $dotPos);
         }
 
         if ($userFunc) {

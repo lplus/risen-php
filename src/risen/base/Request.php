@@ -34,7 +34,7 @@ class Request
     static function getString($key)
     {
         if (is_string($_REQUEST[$key])) {
-            return $_REQUEST[$key];
+            return trim($_REQUEST[$key]);
         }
         return null;
     }

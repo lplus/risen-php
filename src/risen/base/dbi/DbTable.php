@@ -56,7 +56,7 @@ class DbTable
 
     static function selectByPk($pk)
     {
-        $users = self::select('*', static::$_pk . '=' . $pk);
+        $users = self::select('*', static::$pk . '=' . $pk);
         if (empty($users)) {
             return null;
         }
