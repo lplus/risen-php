@@ -41,15 +41,17 @@ class Application
     {
         self::$applicationName = $appName;
 
+        if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
+            parse_str(file_get_contents('php://input', false , null, -1 , $_SERVER['CONTENT_LENGTH'] ), $_PUT);
+            $_REQUEST = array_merge($_REQUEST, $_PUT);
+        }
+
         $configFile = isset($_SERVER['APP_ENV']) ?  "$appName/Config{$_SERVER['APP_ENV']}.php": '$appName/Config.php';
         if (is_file($configFile)) {
             include $configFile;
         }
 
         $urlPart = self::urlMapping($userMapFunction);
-//        if (empty($appName) || empty($urlPart)) {
-//            return;
-//        }
         self::$classInfo = $urlPart;
         $handlerClass = "{$appName}\\handler{$urlPart}";
 
@@ -65,20 +67,6 @@ class Application
 #endtrace
 
 			$handler->handle();
-			/*
-            if (empty(self::$layoutHandler)) {
-//                $handler->setAutoDisplay();
-                $handler->handle();
-                //$handler->display();
-            }
-            else {
-                $childProperty = self::$layoutChildProperty;
-                self::$layoutHandler->$childProperty = $handler;
-                $handler->handle();
-                self::$layoutHandler->handle();
-                self::$layoutHandler->display();
-            }
-			 */
         }
         else {
             $handlerClass404 = "$appName\\handler\\NotfoundHandler";
