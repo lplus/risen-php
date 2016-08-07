@@ -1,14 +1,13 @@
 <?php #release
-/**
- * Created by PhpStorm.
- * User: riki
- * Date: 15/5/27
- * Time: 上午9:26
- */
-
 namespace risen;
 
-
+/**
+ * 处理类的自动加载,
+ * 规则为将类全名(包括命名空间)的分隔符替换为文件系统路径分隔符,并加 .php 后缀
+ * 
+ * Class ClassLoader
+ * @package risen
+ */
 class ClassLoader
 {
     static function registerAutoload()

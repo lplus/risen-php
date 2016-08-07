@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: riki
- * Date: 15/5/9
- * Time: 下午7:31
- */
-
 namespace risen\base;
 
 #trace

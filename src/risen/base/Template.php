@@ -1,13 +1,5 @@
 <?php
-/**
- * Project: risenphp.
- * User: riki
- * Date: 16/7/17
- * Time: 上午10:47
- */
-
 namespace risen\base;
-
 
 use risen\Trace;
 

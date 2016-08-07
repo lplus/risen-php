@@ -1,25 +1,25 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: riki
- * Date: 15/5/9
- * Time: 下午7:32
- */
-
 namespace risen\base;
 
+
+/**
+ * Class Request
+ * @package risen\base
+ */
 class Request
 {
     static function getParam($key)
     {
-        return $_REQUEST[$key];
+        return isset($_REQUEST[$key]) ? $_REQUEST[$key] : null;
     }
 
     static function getNumber($key)
     {
-        if (is_numeric($_REQUEST[$key])) {
-            return $_REQUEST[$key];
-        }
+		if (isset($_REQUEST[$key])) {
+			if (is_numeric($_REQUEST[$key])) {
+				return $_REQUEST[$key];
+			}
+		}
         return null;
     }
 

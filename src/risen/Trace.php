@@ -1,23 +1,16 @@
 <?php #release
-/**
- * Created by PhpStorm.
- * User: riki
- * Date: 15/5/24
- * Time: 上午11:09
- */
 namespace risen;
 
+/**
+ * 跟踪程序运行过程中的关键信息,并提供给 __risen_trace.js 使用,以友好显示
+ * Class Trace
+ * @package risen
+ */
 class Trace
 {
     private static $__data = array();
     static $allErrorsCanHandle = false;
 
-    const SHOW_CONSOLE = 1;
-    const SHOW_WINDOW = 2;
-    const SHOW_BOTH = 3;
-
-    static $showMask = 1;
-    
     const TYPE_WEB = 1;
     const TYPE_JSON = 2;
     private static $__responseType = 1;
@@ -25,12 +18,21 @@ class Trace
     static function setResponseType($type) {
     	self::$__responseType = $type;
     }
-    
-    static function enable($showMask = 1)
+
+    /**
+     * @param bool | callable $enable 一个布尔值或者一个返回布尔值的函数
+     */
+    static function enable($enable = true)
     {
+        if (is_bool($enable) && !$enable) {
+            return;
+        }
+        else if (is_callable($enable) && ! $enable()) {
+            return;
+        }
+
         ob_start();
-        self::$showMask = $showMask;
-		
+
         self::$__beginTime = microtime(true);
         self::$__data['globals']['$_SERVER'] = $_SERVER;
         self::$__data['globals']['$_GET'] = $_GET;
@@ -40,8 +42,8 @@ class Trace
         self::$__data['globals']['$_FILES']= $_FILES;
 
 
-        //ini_set('display_error', 0);
-        //error_reporting(0);
+//        ini_set('display_error', 0);
+//        error_reporting(0);
 
         if ($_SERVER['REQUEST_URI'] == '/__risen_trace.js') {
             self::__outputJs();
@@ -87,7 +89,8 @@ class Trace
         self::$__data['statics'] = array(
             'time' => round(microtime(true) - self::$__beginTime, 4),
             'mem' => memory_get_usage(true),
-            'method' => $_SERVER['REQUEST_METHOD']
+            'method' => $_SERVER['REQUEST_METHOD'],
+            'uri' => $_SERVER['REQUEST_URI']
         );
 
         if (self::$allErrorsCanHandle === false) {
@@ -118,19 +121,12 @@ class Trace
         else {
             echo $output;
             $json = json_encode(self::$__data);
-            $showMask = self::$showMask;
             echo <<<script
-<script type="text/javascript">
-__risen_trace_option = {
-    data: $json,
-    showMask: $showMask,
-    handle: null
-};
-</script>
 <script src="/__risen_trace.js" type="text/javascript"></script>
-
+<script type="text/javascript">
+__risen_trace($json);
+</script>
 script;
-
         }
     }
 

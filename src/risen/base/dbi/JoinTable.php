@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: riki
- * Date: 15/5/25
- * Time: 下午2:49
- */
-
 namespace risen\base\dbi;
 
 #trace
@@ -149,6 +142,14 @@ class JoinTable
         array_unshift($args, $this->tableRef);
         return call_user_func_array(array($this->adapter, 'select'), $args);
     }
+	
+	function selectx($where=""/*, $order="", $limit = "10", $params = array()*/)
+	{
+		$args = [];
+		array_unshift($args, '*');
+		array_unshift($args, $this->tableRef);
+		return call_user_func_array([$this->adapter, 'select'], $args);
+	}
 
     function delete($tables, $where, $params = array())
     {

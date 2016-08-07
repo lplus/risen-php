@@ -1,16 +1,20 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: riki
- * Date: 15/5/13
- * Time: 上午9:42
- */
-
 namespace risen\base\dbi;
 #trace
 use risen\Trace;
 #endtrace
 
+
+#trace
+/**
+ * Class AdapterBase
+ * 不支持读写分离,读写因为读写分离是落后的集群方案
+ * 支持设置多服务器,需要每个有相同的用户名和密码等,只是IP不同, 需要将 _host 设置为数组
+ * 当指定为多服务器的时候, 本类使用array_rand 函数选取其中的一个IP,
+ * 其中相同的IP可以在数组中指定多次,以增加被选中的几率, 这是一种简单且高效的规则
+ * @package risen\base\dbi
+ */
+#endtrace
 abstract class AdapterBase
 {
     function query($sql, array $params = array(), $indexKey = "")
@@ -195,8 +199,9 @@ abstract class AdapterBase
 
     private function __connect()
     {
+        $host = is_array($this->_host) ? array_rand($this->_host): $this->_host;
         if ($this->__pdo === null) {
-            $this->__pdo = new \PDO("mysql:host=$this->_host;dbname=$this->_dbName",
+            $this->__pdo = new \PDO("mysql:host=$host;dbname=$this->_dbName",
                 $this->_user,
                 $this->_passwd,
                 array(
@@ -210,10 +215,12 @@ abstract class AdapterBase
                     'errstr' => 'aa'
                 ]);
             }
+            
 #endtrace
         }
     }
 
+    
     /**
      * @var \PDO
      */

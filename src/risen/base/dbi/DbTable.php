@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: riki
- * Date: 15/5/24
- * Time: 下午6:44
- */
-
 namespace risen\base\dbi;
 #trace
 use risen\Trace;
@@ -44,6 +37,13 @@ class DbTable
         array_unshift($args, static::$name);
         return call_user_func_array(array(static::getAdapter(), 'select'), $args);
     }
+
+	static function selectx($where=""/*, $order="", $limit = "10", $params = array()*/)
+	{
+		$args = func_get_args();
+		array_unshift($args, '*');
+		return call_user_func_array(get_called_class() . "::select", $args);
+	}
     
     static function selectOne($fields = '*'/* $where = "", $order="", $limit = "10", $params = array() */)
     {

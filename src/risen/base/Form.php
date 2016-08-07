@@ -1,11 +1,4 @@
 <?php #release
-/**
- * Created by PhpStorm.
- * User: riki
- * Date: 15/6/3
- * Time: 下午5:03
- */
-
 namespace risen\base;
 
 use risen\base\Request;

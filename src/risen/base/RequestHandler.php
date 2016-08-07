@@ -1,16 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: riki
- * Date: 15/5/9
- * Time: 下午7:32
- */
-
 namespace risen\base;
 #trace
 use risen\Trace;
 #endtrace
 
+/**
+ * Class RequestHandler
+ * @package risen\base
+ */
 class RequestHandler
 {
     protected $autoDisplay = true;

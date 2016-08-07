@@ -1,5 +1,4 @@
 <?php #release
-
 namespace risen\base;
 
 class Session
