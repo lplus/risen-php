@@ -9,7 +9,7 @@ class DbTable
     static $name = '';
     static $pk = '';
     
-	static function className()
+    static function className()
     {
         return get_called_class();
     }
@@ -38,12 +38,12 @@ class DbTable
         return call_user_func_array(array(static::getAdapter(), 'select'), $args);
     }
 
-	static function selectx($where=""/*, $order="", $limit = "10", $params = array()*/)
-	{
-		$args = func_get_args();
-		array_unshift($args, '*');
-		return call_user_func_array(get_called_class() . "::select", $args);
-	}
+    static function selectx($where=""/*, $order="", $limit = "10", $params = array()*/)
+    {
+        $args = func_get_args();
+        array_unshift($args, '*');
+        return call_user_func_array(get_called_class() . "::select", $args);
+    }
     
     static function selectOne($fields = '*'/* $where = "", $order="", $limit = "10", $params = array() */)
     {
@@ -86,14 +86,14 @@ class DbTable
 
     static function join($tableClass, $alias, $joinCondition, $type="LEFT")
     {
-    	$joinTable = new JoinTable(static::getAdapter(), get_called_class());
-    	return $joinTable->join($tableClass, $alias, $joinCondition, $type);
+        $joinTable = new JoinTable(static::getAdapter(), get_called_class());
+        return $joinTable->join($tableClass, $alias, $joinCondition, $type);
     }
     
     static function fkJoin($tableClass, $alias, $type="LEFT")
     {
-    	$joinTable = new JoinTable(static::getAdapter(), get_called_class());
-    	return $joinTable->fkJoin($tableClass, $alias, $type);
+        $joinTable = new JoinTable(static::getAdapter(), get_called_class());
+        return $joinTable->fkJoin($tableClass, $alias, $type);
     }
 
     protected static function getAdapter()

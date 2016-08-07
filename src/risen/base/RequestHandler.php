@@ -112,7 +112,7 @@ html;
             }
             else{ // 目前只当做json处理，xml之类的以后可以考虑
 #trace
-				Trace::setResponseType(Trace::TYPE_JSON);
+                Trace::setResponseType(Trace::TYPE_JSON);
 #endtrace
                 if (!headers_sent()) {
                     header("Content-Type:text/json");
@@ -121,7 +121,7 @@ html;
             }
             return;
         }
-		else if ($this->autoDisplay) {
+        else if ($this->autoDisplay) {
             $this->display();
         }
     }

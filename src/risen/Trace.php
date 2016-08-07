@@ -16,7 +16,7 @@ class Trace
     private static $__responseType = 1;
     
     static function setResponseType($type) {
-    	self::$__responseType = $type;
+        self::$__responseType = $type;
     }
 
     /**
@@ -58,7 +58,7 @@ class Trace
         if (is_file($aliasFile)) {
             include $aliasFile;
         }
-		include __DIR__ . '/trace/user_trace_func.php';
+        include __DIR__ . '/trace/user_trace_func.php';
     }
 
 

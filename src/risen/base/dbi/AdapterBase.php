@@ -160,6 +160,7 @@ abstract class AdapterBase
 
     function select($table /*, $fields = '*', $where = "", $order="", $limit = "10", $params = array() */)
     {
+        
         if ($table == '') {
             return array();
         }

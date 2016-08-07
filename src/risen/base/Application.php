@@ -59,7 +59,7 @@ class Application
             }
 #endtrace
 
-			$handler->handle();
+            $handler->handle();
         }
         else {
             $handlerClass404 = "$appName\\handler\\NotfoundHandler";

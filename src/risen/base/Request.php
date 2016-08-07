@@ -15,11 +15,11 @@ class Request
 
     static function getNumber($key)
     {
-		if (isset($_REQUEST[$key])) {
-			if (is_numeric($_REQUEST[$key])) {
-				return $_REQUEST[$key];
-			}
-		}
+        if (isset($_REQUEST[$key])) {
+            if (is_numeric($_REQUEST[$key])) {
+                return $_REQUEST[$key];
+            }
+        }
         return null;
     }
 

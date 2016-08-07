@@ -26,14 +26,14 @@ function __risen_trace(data)
         + Math.round(1 / data['statics'].time)
         + ", Memory usage: " + data['statics'].mem / 1024 + "KB]");
 
-	if (typeof(data['info']) != 'undefined') {
-		console.group("User Trace");
-		for (i in data['info'])
-		{
-			console.log(data['info'][i]);
-		}
-		console.groupEnd();
-	}
+    if (typeof(data['info']) != 'undefined') {
+        console.group("User Trace");
+        for (i in data['info'])
+        {
+            console.log(data['info'][i]);
+        }
+        console.groupEnd();
+    }
 
     if (typeof(data['error']) != 'undefined') {
 
