@@ -42,16 +42,22 @@ class DbTable
     {
         $args = func_get_args();
         array_unshift($args, '*');
-        return call_user_func_array(get_called_class() . "::select", $args);
+        array_unshift($args, static::$name);
+        return call_user_func_array(array(static::getAdapter(), 'select'), $args);
     }
     
-    static function selectOne($fields = '*'/* $where = "", $order="", $limit = "10", $params = array() */)
+    static function selectOne($fields , $where, $params = [])
     {
-        $result = call_user_func_array(get_called_class() . "::select", func_get_args());
+        $result = self::select($fields, $where, '', '1', $params);
         if (empty($result)) {
             return null;
         }
         return $result[0];
+    }
+
+    static function selectxOne($where, $params = [])
+    {
+        return self::selectOne('*', $where, $params);
     }
 
     static function selectByPk($pk)
@@ -65,9 +71,9 @@ class DbTable
 
     /**
      * 
-     * @param unknown $where
+     * @param string $where
      * @param string $tables
-     * @param unknown $params
+     * @param array $params
      */
     static function delete($where, $params = array())
     {

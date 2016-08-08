@@ -149,6 +149,20 @@ class JoinTable
         array_unshift($args, $this->tableRef);
         return call_user_func_array([$this->adapter, 'select'], $args);
     }
+    
+    function selectOne($fields, $where, $params=array())
+    {
+        $result = $this->select($fields, $where, '', '1', $params);
+        if (empty($result)) {
+            return null;
+        }
+        return $result[0];
+    }
+    
+    function selectxOne($where, $params=array())
+    {
+        return $this->selectOne('*', $where, $params);
+    }
 
     function delete($tables, $where, $params = array())
     {
