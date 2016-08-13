@@ -33,7 +33,7 @@ risen_php : \$(DEPS) Makefile
 	date > risen_php
 
 install: 
-	if [ -d \$(PREFIX)]; then \\
+	if [ -d \$(PREFIX) ]; then \\
 		rm -rf \$(PREFIX); \\
 	fi
 	if [ ! -d \$(PREFIX) ]; then \\
