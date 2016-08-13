@@ -56,7 +56,7 @@ function __risen_trace(data)
     if (typeof(data['sql']) != "undefined") {
         console.group("Sql Info(" + data['sql'].length + ")");
         for (j in data['sql']) {
-            console.group("SQL[" + j + "]\tQuery Cost: " + data['sql'][j].time + " Sec");
+            console.groupCollapsed("SQL[" + j + "]\tQuery Cost: " + data['sql'][j].time + " Sec");
             console.debug(data['sql'][j].sql);
             console.groupCollapsed("Execute information");
             if (data['sql'][j].explain != null) {

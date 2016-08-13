@@ -118,4 +118,9 @@ class DbTable
     {
         return static::getAdapter()->insert(static::$name, $row);
     }
+
+	static function replace(array $row)
+	{
+		return static::getAdapter()->replace(static::$name, $row);
+	}
 }

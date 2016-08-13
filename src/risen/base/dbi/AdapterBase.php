@@ -138,9 +138,24 @@ abstract class AdapterBase
                 $valuePart .= ",\n`$field`=NULL";
                 continue;
             }
+
+			if ($value[0] == '+' || $value[0] == '-') { // 目前只支持 +,-
+				$valuePart .= ",\n`$field`=`{$field}` {$value}";
+			}
+			else{
+				if (is_numeric($value) || $value[0] == ':') {
+					$valuePart .= ",\n`$field`=$value";
+				}
+				else {
+					$valuePart .= ",\n`$field`='$value'";
+				}
+			}
+			/*
             $valuePart .= (is_numeric($value) || $value[0] == ':') ?
-                ",\n`$field`=$value":
-                ",\n`$field`='$value'";
+                ",\n`$field`=$value" :(
+				($value[0] == '+' || $value[0] == '-') ?
+			   	",\n`$field`=`{$field}`{$value}" : ",\n`$field`='$value'");
+			 */
         }
         $valuePart[0] = " ";
         return "\nSET$valuePart";
@@ -197,6 +212,13 @@ abstract class AdapterBase
         $this->exec($sql);
         return $this->__pdo->lastInsertId();
     }
+
+	function replace($table, array $values)
+	{
+		$sql = "REPLACE INTO {$table}" . $this->makeSqlValues($values);
+		$this->exec($sql);
+		return $this->__pdo->lastInsertId();
+	}
 
     private function __connect()
     {
