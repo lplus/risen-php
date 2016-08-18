@@ -150,12 +150,6 @@ abstract class AdapterBase
 					$valuePart .= ",\n`$field`='$value'";
 				}
 			}
-			/*
-            $valuePart .= (is_numeric($value) || $value[0] == ':') ?
-                ",\n`$field`=$value" :(
-				($value[0] == '+' || $value[0] == '-') ?
-			   	",\n`$field`=`{$field}`{$value}" : ",\n`$field`='$value'");
-			 */
         }
         $valuePart[0] = " ";
         return "\nSET$valuePart";

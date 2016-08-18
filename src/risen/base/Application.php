@@ -90,12 +90,8 @@ class Application
      */
     private static function urlMapping(callable $userFunc = null)
     {
-        if ($_SERVER["REQUEST_URI"] == '/') {
-            return '\IndexHandler';
-        }
 
-        $urlInfo = parse_url($_SERVER['REQUEST_URI']);
-        $pathInfo = $urlInfo['path'];
+        $pathInfo = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME']: $_SERVER['PHP_SELF'];
 
         $dotPos = strpos($pathInfo, '.');
         if ($dotPos !== false) {
@@ -123,16 +119,15 @@ class Application
 
         $pathInfo = str_replace('/', '\\', $pathInfo);
 
-        if ($pathInfo[strlen($pathInfo) - 1] == '\\') {
-            $pathInfo .= 'IndexHandler';
-        }
-        else {
+        //if ($pathInfo[strlen($pathInfo) - 1] == '\\') {
+        //    $pathInfo .= 'IndexHandler';
+        //}
+        //else {
             $lastDelimiter = strrpos($pathInfo, '\\');
             $pathInfo[$lastDelimiter + 1] = strtoupper($pathInfo[$lastDelimiter + 1]);
             $pathInfo .= 'Handler';
-        }
+        //}
 
         return $pathInfo;
     }
-
 }
